@@ -31,10 +31,10 @@ public class VehiculoDAO {
         boolean modificado = false;
         for (int i = 0; i < vehiculos.size(); i++) {
             if (vehiculos.get(i).getMatricula().equals(vehiculo.getMatricula())) {
-                vehiculos.get(i).setMarca(vehiculo.getMarca());
-                vehiculos.get(i).setModelo(vehiculo.getModelo());
-                vehiculos.get(i).setAno(vehiculo.getAno());
-                vehiculos.get(i).setColor(vehiculo.getColor());
+                vehiculos.get(i).setMarca(vehiculo.getMarca().equals("") ? vehiculos.get(i).getMarca() : vehiculo.getMarca());
+                vehiculos.get(i).setModelo(vehiculo.getModelo().equals("") ? vehiculos.get(i).getModelo() : vehiculo.getModelo());
+                vehiculos.get(i).setAno(vehiculo.getAno() == 0 ? vehiculos.get(i).getAno() : vehiculo.getAno());
+                vehiculos.get(i).setColor(vehiculo.getColor().equals("") ? vehiculos.get(i).getColor() : vehiculo.getColor());
                 modificado = true;
                 break;
             }

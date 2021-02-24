@@ -1,5 +1,6 @@
 package com.plexus.sabaris;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,6 +19,8 @@ public class Reparacion {
     private double tiempo;
 
     private double totalReparacion;
+
+    public SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
     public Reparacion() {
         super();
@@ -114,9 +117,9 @@ public class Reparacion {
                 ", cliente='" + cliente + '\'' +
                 ", vehiculo='" + vehiculo + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", fecha=" + fecha +
+                ", fecha=" + formatter.format(fecha) +
                 ", tiempo=" + tiempo +
-                ", totalReparacion=" + totalReparacion +
-                '}';
+                "h, totalReparacion=" + totalReparacion +
+                "€}";
     }
 }

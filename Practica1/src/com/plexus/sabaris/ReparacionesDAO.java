@@ -17,14 +17,16 @@ public class ReparacionesDAO {
         return reparaciones.add(reparacion);
     }
 
-    public boolean modificar(Reparacion vehiculo) {
+    public boolean modificar(Reparacion reparacion) {
         boolean modificado = false;
         for (int i = 0; i < reparaciones.size(); i++) {
-            if (reparaciones.get(i).getId_reparacion() == vehiculo.getId_reparacion()) {
-                reparaciones.get(i).setDescripcion(vehiculo.getDescripcion());
-                reparaciones.get(i).setFecha(vehiculo.getFecha());
-                reparaciones.get(i).setTiempo(vehiculo.getTiempo());
-                reparaciones.get(i).setTotalReparacion(vehiculo.getTotalReparacion());
+            if (reparaciones.get(i).getId_reparacion() == reparacion.getId_reparacion()) {
+                reparaciones.get(i).setCliente(reparacion.getCliente().equals(null) ? reparaciones.get(i).getCliente() : reparacion.getCliente());
+                reparaciones.get(i).setVehiculo(reparacion.getVehiculo().equals(null) ? reparaciones.get(i).getCliente() : reparacion.getCliente());
+                reparaciones.get(i).setDescripcion(reparacion.getDescripcion().equals("") ? reparaciones.get(i).getCliente() : reparacion.getCliente());
+                reparaciones.get(i).setFecha(reparacion.getFecha().equals("") ? reparaciones.get(i).getFecha() : reparacion.getFecha());
+                reparaciones.get(i).setTiempo(reparacion.getTiempo() == 0.0d ? reparaciones.get(i).getTiempo() : reparacion.getTiempo());
+                reparaciones.get(i).setTotalReparacion(reparacion.getTotalReparacion() == 0.0d ? reparaciones.get(i).getTotalReparacion() : reparacion.getTotalReparacion());
                 modificado = true;
                 break;
             }

@@ -27,9 +27,9 @@ public class ClienteDAO {
         boolean modificado = false;
         for (int i = 0; i < clientes.size(); i++) {
             if (clientes.get(i).getDni().equals(cliente.getDni())) {
-                clientes.get(i).setNombre(cliente.getNombre());
-                clientes.get(i).setApellidos(cliente.getApellidos());
-                clientes.get(i).setEdad(cliente.getEdad());
+                clientes.get(i).setNombre(cliente.getNombre().equals("") ? clientes.get(i).getNombre() : cliente.getNombre());
+                clientes.get(i).setApellidos(cliente.getApellidos().equals("") ? clientes.get(i).getApellidos() : cliente.getApellidos());
+                clientes.get(i).setEdad(cliente.getEdad() == 0 ? clientes.get(i).getEdad() : cliente.getEdad());
                 modificado = true;
                 break;
             }
