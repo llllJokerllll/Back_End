@@ -53,6 +53,7 @@ public class Main {
 
     private static void menu1() {
         int opcion = -1;
+        ClienteDAO c = new ClienteDAO();
         while(opcion != 5) {
             System.out.println("Gestionar los Clientes");
             System.out.println("==================================================");
@@ -73,17 +74,59 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-
-                    break;
+                    try {
+                        System.out.println("Por favor, introduzca el DNI del cliente");
+                        String dni = bf.readLine().toUpperCase();
+                        System.out.println("For favor, introduzca el Nombre del cliente");
+                        String nombre = bf.readLine();
+                        System.out.println("Por favor, introduzca los Apellidos del cliente");
+                        String apellidos = bf.readLine();
+                        System.out.println("Por favor, introduzca la Edad del cliente");
+                        int edad = bf.read();
+                        c.insertar(new Cliente(dni, nombre, apellidos, edad));
+                        System.out.println("Cliente añadido correctamente");
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        break;
+                    }
                 case 2:
                     menu1_1();
                     break;
                 case 3:
-
-                    break;
+                    try {
+                        System.out.println("Por favor, introduzca el DNI del cliente a modificar");
+                        String dni = bf.readLine().toUpperCase();
+                        System.out.println("For favor, introduzca el nuevo Nombre del cliente");
+                        String nombre = bf.readLine();
+                        System.out.println("Por favor, introduzca los nuevos Apellidos del cliente");
+                        String apellidos = bf.readLine();
+                        System.out.println("Por favor, introduzca la nueva Edad del cliente");
+                        int edad = bf.read();
+                        c.modificar(new Cliente(dni, nombre, apellidos, edad));
+                        System.out.println("Cliente modificado correctamente");
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        break;
+                    }
                 case 4:
-
-                    break;
+                    try {
+                        System.out.println("Por favor, introduzca el DNI del cliente a eliminar");
+                        String dni = bf.readLine().toUpperCase();
+                        c.eliminar(dni);
+                        System.out.println("Cliente eliminado correctamente");
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        break;
+                    }
                 case 5:
                     menu();
                     break;
@@ -96,6 +139,7 @@ public class Main {
 
     private static void menu1_1() {
         int opcion = -1;
+        ClienteDAO c = new ClienteDAO();
         while(opcion != 3 && opcion != 4) {
             System.out.println("Buscar Cliente");
             System.out.println("==================================================");
@@ -115,11 +159,31 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-
-                    break;
+                    try {
+                        System.out.println("Por favor, introduzca el DNI del cliente a buscar");
+                        String dni = bf.readLine().toUpperCase();
+                        System.out.println(c.buscarDni(dni));
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        break;
+                    }
                 case 2:
-
-                    break;
+                    try {
+                        System.out.println("For favor, introduzca el Nombre del cliente a buscar");
+                        String nombre = bf.readLine();
+                        System.out.println("Por favor, introduzca los Apellidos del cliente a buscar");
+                        String apellidos = bf.readLine();
+                        c.buscarNomApe(nombre, apellidos).stream().forEach(e -> System.out.println(e));
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        break;
+                    }
                 case 3:
                     menu1();
                     break;
@@ -135,6 +199,7 @@ public class Main {
 
     private static void menu2() {
         int opcion = -1;
+        VehiculoDAO v = new VehiculoDAO();
         while(opcion != 5) {
             System.out.println("Gestionar los Vehículos");
             System.out.println("==================================================");
@@ -155,16 +220,19 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    menu1();
+
                     break;
                 case 2:
                     menu2_1();
                     break;
                 case 3:
-                    menu3();
+
                     break;
                 case 4:
-                    System.out.println("Hasta otra, gracias por utilizar nuestros servicios");
+
+                    break;
+                case 5:
+                    menu();
                     break;
                 default:
                     System.out.println("Opción seleccionada incorrecta");
@@ -175,6 +243,7 @@ public class Main {
 
     private static void menu2_1() {
         int opcion = -1;
+        VehiculoDAO v = new VehiculoDAO();
         while(opcion != 5 && opcion != 4) {
             System.out.println("Buscar Vehículo");
             System.out.println("==================================================");
@@ -218,6 +287,7 @@ public class Main {
 
     private static void menu3() {
         int opcion = -1;
+        ReparacionesDAO r = new ReparacionesDAO();
         while(opcion != 4) {
             System.out.println("Gestionar las Reparaciones");
             System.out.println("==================================================");
@@ -257,6 +327,7 @@ public class Main {
 
     private static void menu3_1() {
         int opcion = -1;
+        ReparacionesDAO r = new ReparacionesDAO();
         while(opcion != 4 && opcion != 5) {
             System.out.println("Buscar Reparación");
             System.out.println("==================================================");
