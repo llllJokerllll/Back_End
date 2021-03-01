@@ -8,9 +8,9 @@ public class Reparacion {
 
     private int id_reparacion;
 
-    private String cliente;
+    private Cliente cliente;
 
-    private String vehiculo;
+    private Vehiculo vehiculo;
 
     private String descripcion;
 
@@ -27,8 +27,8 @@ public class Reparacion {
     }
 
     public Reparacion(Cliente cliente, Vehiculo vehiculo, String descripcion, Date fecha, double tiempo, double totalReparacion) {
-        this.cliente = cliente.getDni();
-        this.vehiculo = vehiculo.getMatricula();
+        this.cliente = cliente;
+        this.vehiculo = vehiculo;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.tiempo = tiempo;
@@ -43,19 +43,19 @@ public class Reparacion {
         this.id_reparacion = id_reparacion;
     }
 
-    public String getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
-    public String getVehiculo() {
+    public Vehiculo getVehiculo() {
         return vehiculo;
     }
 
-    public void setVehiculo(String vehiculo) {
+    public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
     }
 
