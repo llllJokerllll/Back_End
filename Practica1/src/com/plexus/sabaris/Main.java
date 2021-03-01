@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Main {
@@ -26,7 +27,8 @@ public class Main {
             System.out.println("1. Gestionar los Clientes");
             System.out.println("2. Gestionar los Vehículos");
             System.out.println("3. Gestionar las Reparaciones");
-            System.out.println("4. Salir");
+            System.out.println("4. Informes");
+            System.out.println("5. Salir");
             System.out.print("Introduzca unha opción: ");
 
             try {
@@ -48,6 +50,9 @@ public class Main {
                     menu3();
                     break;
                 case 4:
+                    menu4();
+                    break;
+                case 5:
                     System.out.println("Hasta otra, gracias por utilizar nuestros servicios");
                     break;
                 default:
@@ -531,4 +536,49 @@ public class Main {
                     break;
             }
         }
+
+    private static void menu4() {
+        System.out.println("Informes");
+        System.out.println("==================================================");
+        System.out.println("1. Listas Clientes ordenados por Edad");
+        System.out.println("2. 10 clientes con más reparaciones");
+        System.out.println("3. Reparación más costosa");
+        System.out.println("4. Reparación más barata");
+        System.out.println("5. Volver al Menú Principal");
+        System.out.print("Introduzca unha opción: ");
+
+        try {
+            opcion = Integer.parseInt(bf.readLine());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        switch (opcion) {
+            case 1:
+                c.clientes.stream().sorted(Comparator.comparing(Cliente::getEdad)).forEach(System.out::println);
+                menu4();
+                break;
+            case 2:
+
+                menu4();
+                break;
+            case 3:
+                System.out.println(r.reparaciones.stream().max(Comparator.comparing(Reparacion::getTotalReparacion)));
+                menu4();
+                break;
+            case 4:
+                System.out.println(r.reparaciones.stream().min(Comparator.comparing(Reparacion::getTotalReparacion)));
+                menu4();
+                break;
+            case 5:
+                menu();
+                break;
+            default:
+                System.out.println("Opción seleccionada incorrecta");
+                menu3_1();
+                break;
+        }
     }
+}
