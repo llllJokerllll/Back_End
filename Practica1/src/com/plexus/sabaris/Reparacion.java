@@ -1,10 +1,11 @@
 package com.plexus.sabaris;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class Reparacion {
+public class Reparacion implements Serializable {
 
     private int id_reparacion;
 

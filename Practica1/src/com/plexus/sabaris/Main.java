@@ -1,10 +1,9 @@
 package com.plexus.sabaris;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
@@ -14,10 +13,18 @@ import java.util.stream.Stream;
 public class Main {
 
     static BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw;
     static ClienteDAO c = new ClienteDAO();
     static VehiculoDAO v = new VehiculoDAO();
     static ReparacionesDAO r = new ReparacionesDAO();
     static int opcion;
+    static {
+        try {
+            bw = new BufferedWriter(new FileWriter("bd_backup.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         menu();
@@ -31,7 +38,9 @@ public class Main {
             System.out.println("2. Gestionar los Vehículos");
             System.out.println("3. Gestionar las Reparaciones");
             System.out.println("4. Informes");
-            System.out.println("5. Salir");
+            System.out.println("5. Guardar los datos de memoria a un fichero");
+            System.out.println("6. Cargar los datos de memoria desde un fichero");
+            System.out.println("7. Salir");
             System.out.print("Introduzca unha opción: ");
 
             try {
@@ -56,6 +65,12 @@ public class Main {
                     menu4();
                     break;
                 case 5:
+                    System.out.println(guardar() ? "Guardado correctamente" : "No se ha podido guardar");
+                    break;
+                case 6:
+                    System.out.println(cargar() ? "Cargado correctamente" : "No se ha podido cargar");
+                    break;
+                case 7:
                     System.out.println("Hasta otra, gracias por utilizar nuestros servicios");
                     break;
                 default:
@@ -584,6 +599,58 @@ public class Main {
                 System.out.println("Opción seleccionada incorrecta");
                 menu3_1();
                 break;
+        }
+    }
+
+    private static boolean guardar() {
+        boolean result = false;
+
+        try {
+            System.out.print("Guardando Datos de memoria en ficheros... ");
+
+            ObjectOutputStream clientesBak = new ObjectOutputStream(new FileOutputStream("clientes.dat") );
+            clientesBak.writeObject(c.clientes);
+            clientesBak.close();
+
+            ObjectOutputStream vehiculosBak = new ObjectOutputStream(new FileOutputStream("vehiculos.dat") );
+            vehiculosBak.writeObject(c.clientes);
+            vehiculosBak.close();
+
+            ObjectOutputStream reparacionesBak = new ObjectOutputStream(new FileOutputStream("reparaciones.dat") );
+            reparacionesBak.writeObject(c.clientes);
+            reparacionesBak.close();
+
+            result = true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
+    private static boolean cargar() {
+        boolean result = false;
+
+        try {
+            System.out.print("Cargando Datos en memoria desde fichero externo... ");
+
+            ObjectInputStream leyendoClientes = new ObjectInputStream(new FileInputStream("clientes.dat") );
+            c.clientes = (ArrayList<Cliente>)leyendoClientes.readObject();
+            leyendoClientes.close();
+
+            ObjectInputStream leyendoVehiculos = new ObjectInputStream(new FileInputStream("vehiculos.dat") );
+            v.vehiculos = (ArrayList<Vehiculo>)leyendoVehiculos.readObject();
+            leyendoVehiculos.close();
+
+            ObjectInputStream leyendoReparaciones = new ObjectInputStream(new FileInputStream("reparaciones.dat") );
+            r.reparaciones = (ArrayList<Reparacion>)leyendoReparaciones.readObject();
+            leyendoReparaciones.close();
+
+            result = true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            return result;
         }
     }
 }

@@ -1,8 +1,9 @@
 package com.plexus.sabaris;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Vehiculo {
+public class Vehiculo implements Serializable {
 
     private String matricula;
 
