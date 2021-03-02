@@ -7,6 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -561,7 +564,9 @@ public class Main {
                 menu4();
                 break;
             case 2:
-
+                Map<Cliente, Long> mapa = r.reparaciones.stream().collect(Collectors.groupingBy(Reparacion::getCliente, Collectors.counting()));
+                Stream<Map.Entry<Cliente, Long>> reparaciones = mapa.entrySet().stream().sorted(Map.Entry.comparingByValue());
+                reparaciones.forEach(System.out::println);
                 menu4();
                 break;
             case 3:
