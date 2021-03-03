@@ -147,7 +147,7 @@ public class Main {
                     try {
                         System.out.println("Por favor, introduzca el DNI del cliente a eliminar");
                         String dni = bf.readLine().toUpperCase();
-                        c.eliminar(dni);
+                        c.eliminar(c.buscarDni(dni));
                         System.out.println("Cliente eliminado correctamente");
                     } catch (NumberFormatException e) {
                         e.printStackTrace();

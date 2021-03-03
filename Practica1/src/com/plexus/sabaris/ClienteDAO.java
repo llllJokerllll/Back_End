@@ -1,43 +1,119 @@
 package com.plexus.sabaris;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ClienteDAO {
+public class ClienteDAO implements DAO<Cliente> {
     protected ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
     public ArrayList<Cliente> obtener() {
         return clientes;
     }
 
-    public boolean insertar(Cliente cliente) {
-        return clientes.add(cliente);
-    }
-
     public Cliente buscarDni(String dni) {
-        return clientes.stream().filter(e -> e.getDni().equals(dni)).collect(Collectors.toList()).get(0);
-    }
+        Cliente u1 = new Cliente();
+        try {
+            Connection con = ConexionBD.obterConexion();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where DNI = " + dni + ";");
 
-    public List<Cliente> buscarNomApe(String nombre, String apellidos) {
-        return clientes.stream().filter(e -> e.getNombre().equals(nombre) && e.getApellidos().equals(apellidos)).collect(Collectors.toList());
-    }
-
-    public boolean modificar(Cliente cliente) {
-        boolean modificado = false;
-        for (int i = 0; i < clientes.size(); i++) {
-            if (clientes.get(i).getDni().equals(cliente.getDni())) {
-                clientes.get(i).setNombre(cliente.getNombre().equals("") ? clientes.get(i).getNombre() : cliente.getNombre());
-                clientes.get(i).setApellidos(cliente.getApellidos().equals("") ? clientes.get(i).getApellidos() : cliente.getApellidos());
-                clientes.get(i).setEdad(cliente.getEdad() == 0 ? clientes.get(i).getEdad() : cliente.getEdad());
-                modificado = true;
-                break;
+            if(rs.next()) {
+                u1.setDni(dni);
+                u1.setNombre(rs.getString(2));
+                u1.setApellidos(rs.getString(3));
+                u1.setEdad(Integer.parseInt(rs.getString(4)));
             }
+            ConexionBD.devolverConexion(con);
+
+        } catch (SQLException e) {
+            System.out.println("ERROR SQL: " + e.getMessage());
         }
-        return modificado;
+        return u1;
     }
 
-    public boolean eliminar(String dni) {
-        return clientes.removeIf(e -> e.getDni().equals(dni));
+    public ArrayList<Cliente> buscarNomApe(String nombre, String apellidos) {
+        ArrayList<Cliente> clientes2 = new ArrayList<>();
+        Cliente u2 = new Cliente();
+        try {
+            Connection con = ConexionBD.obterConexion();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where Nombre = " + nombre + " AND Apellidos = " + apellidos + ";");
+
+            if(rs.next()) {
+                u2.setDni(rs.getString(1));
+                u2.setNombre(rs.getString(2));
+                u2.setApellidos(rs.getString(3));
+                u2.setEdad(Integer.parseInt(rs.getString(4)));
+                clientes2.add(u2);
+            }
+            ConexionBD.devolverConexion(con);
+
+        } catch (SQLException e) {
+            System.out.println("ERROR SQL: " + e.getMessage());
+        }
+        return clientes2;
+    }
+
+    @Override
+    public Cliente get(int id) {
+        return null;
+    }
+
+    @Override
+    public List<Cliente> getAll() {
+        return null;
+    }
+
+    @Override
+    public boolean insertar(Cliente cliente) {
+        boolean aceptado = true;
+        try {
+            Connection con = ConexionBD.obterConexion();
+            Statement st = con.createStatement();
+            aceptado = st.execute("INSERT INTO cliente (DNI, Nombre, Apellidos, Edad) VALUES ('" + cliente.getDni() + "', '" + cliente.getNombre() + "', '" + cliente.getApellidos() + "', '" + cliente.getEdad() + "');");
+
+            ConexionBD.devolverConexion(con);
+            return aceptado;
+        } catch (SQLException e) {
+            System.out.println("ERROR SQL: ");e.printStackTrace();
+        }
+        return aceptado;
+    }
+
+    @Override
+    public boolean modificar(Cliente cliente) {
+        boolean aceptado = true;
+        try {
+            Connection con = ConexionBD.obterConexion();
+            Statement st = con.createStatement();
+            aceptado = st.execute("UPDATE cliente SET DNI = '" + cliente.getDni() + "', Nombre = '" + cliente.getNombre() + "', Apellidos = '" + cliente.getApellidos() + "', Edad = '" + cliente.getEdad() + "' WHERE DNI = " + cliente.getDni() + ";");
+
+            ConexionBD.devolverConexion(con);
+            return aceptado;
+        } catch (SQLException e) {
+            System.out.println("ERROR SQL: " + e.getMessage());
+        }
+        return aceptado;
+    }
+
+    @Override
+    public boolean eliminar(Cliente cliente) {
+        boolean aceptado = true;
+        try {
+            Connection con = ConexionBD.obterConexion();
+            Statement st = con.createStatement();
+            aceptado = st.execute("DELETE FROM cliente WHERE DNI = " + cliente.getDni() + ";");
+
+            ConexionBD.devolverConexion(con);
+            return aceptado;
+        } catch (SQLException e) {
+            System.out.println("ERROR SQL: ");e.printStackTrace();
+        }
+        return aceptado;
     }
 }
