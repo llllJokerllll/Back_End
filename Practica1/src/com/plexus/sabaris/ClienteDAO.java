@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ClienteDAO implements DAO<Cliente> {
     protected ArrayList<Cliente> clientes = new ArrayList<Cliente>();
@@ -20,10 +19,10 @@ public class ClienteDAO implements DAO<Cliente> {
         try {
             Connection con = ConexionBD.obterConexion();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where DNI = " + dni + ";");
+            ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where DNI = '" + dni + "';");
 
             if(rs.next()) {
-                u1.setDni(dni);
+                u1.setDni(rs.getString(1));
                 u1.setNombre(rs.getString(2));
                 u1.setApellidos(rs.getString(3));
                 u1.setEdad(Integer.parseInt(rs.getString(4)));
@@ -42,7 +41,7 @@ public class ClienteDAO implements DAO<Cliente> {
         try {
             Connection con = ConexionBD.obterConexion();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where Nombre = " + nombre + " AND Apellidos = " + apellidos + ";");
+            ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where Nombre = '" + nombre + "' AND Apellidos = '" + apellidos + "';");
 
             if(rs.next()) {
                 u2.setDni(rs.getString(1));
@@ -91,7 +90,7 @@ public class ClienteDAO implements DAO<Cliente> {
         try {
             Connection con = ConexionBD.obterConexion();
             Statement st = con.createStatement();
-            aceptado = st.execute("UPDATE cliente SET DNI = '" + cliente.getDni() + "', Nombre = '" + cliente.getNombre() + "', Apellidos = '" + cliente.getApellidos() + "', Edad = '" + cliente.getEdad() + "' WHERE DNI = " + cliente.getDni() + ";");
+            aceptado = st.execute("UPDATE cliente SET DNI = '" + cliente.getDni() + "', Nombre = '" + cliente.getNombre() + "', Apellidos = '" + cliente.getApellidos() + "', Edad = '" + cliente.getEdad() + "' WHERE DNI = '" + cliente.getDni() + "';");
 
             ConexionBD.devolverConexion(con);
             return aceptado;
@@ -107,7 +106,7 @@ public class ClienteDAO implements DAO<Cliente> {
         try {
             Connection con = ConexionBD.obterConexion();
             Statement st = con.createStatement();
-            aceptado = st.execute("DELETE FROM cliente WHERE DNI = " + cliente.getDni() + ";");
+            aceptado = st.execute("DELETE FROM cliente WHERE DNI = '" + cliente.getDni() + "';");
 
             ConexionBD.devolverConexion(con);
             return aceptado;
