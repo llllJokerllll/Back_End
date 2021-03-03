@@ -298,7 +298,7 @@ public class Main {
                     try {
                         System.out.println("Por favor, introduzca la Matricula del vehículo");
                         String matricula= bf.readLine().toUpperCase();
-                        v.eliminar(matricula);
+                        v.eliminar(v.buscarMatricula(matricula));
                         System.out.println("Vehiculo eliminado correctamente");
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -440,7 +440,7 @@ public class Main {
                 case 2:
                     try {
                         System.out.println("Por favor, introduzca el ID de la reparación a modificar");
-                        String id = bf.readLine().toUpperCase();
+                        String id = bf.readLine();
                         System.out.println("For favor, introduzca el nuevo DNI del cliente de la reparación");
                         String dni = bf.readLine();
                         System.out.println("For favor, introduzca la nueva Mátricula del vehículo de la reparación");
@@ -452,7 +452,9 @@ public class Main {
                         System.out.println("Por favor, introduzca el nuevo Total de la reparación");
                         String total = bf.readLine();
                         Date fecha = new Date();
-                        r.modificar(new Reparacion(c.buscarDni(dni), v.buscarMatricula(matricula), descripcion, fecha, Double.parseDouble(tiempo), Double.parseDouble(total)));
+                        Reparacion r1 = new Reparacion(c.buscarDni(dni), v.buscarMatricula(matricula), descripcion, fecha, Double.parseDouble(tiempo), Double.parseDouble(total));
+                        r1.setId_reparacion(Integer.parseInt(id));
+                        r.modificar(r1);
                         System.out.println("Reparación modificada correctamente");
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -522,9 +524,9 @@ public class Main {
                     break;
                 case 3:
                     try {
-                        System.out.println("For favor, introduzca la Fecha a buscar (dd-MM-yyyy HH:mm:ss) en las reparaciones");
+                        System.out.println("For favor, introduzca la Fecha a buscar (yyyy-MM-dd) en las reparaciones");
                         String fecha = bf.readLine();
-                        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         Date fechaDate = null;
                         try {
                             fechaDate = formato.parse(fecha);

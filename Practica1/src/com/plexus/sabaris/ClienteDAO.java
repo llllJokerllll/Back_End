@@ -21,7 +21,7 @@ public class ClienteDAO implements DAO<Cliente> {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where DNI = '" + dni + "';");
 
-            if(rs.next()) {
+            while (rs.next()) {
                 u1.setDni(rs.getString(1));
                 u1.setNombre(rs.getString(2));
                 u1.setApellidos(rs.getString(3));
@@ -43,7 +43,7 @@ public class ClienteDAO implements DAO<Cliente> {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where Nombre = '" + nombre + "' AND Apellidos = '" + apellidos + "';");
 
-            if(rs.next()) {
+            while (rs.next()) {
                 u2.setDni(rs.getString(1));
                 u2.setNombre(rs.getString(2));
                 u2.setApellidos(rs.getString(3));
