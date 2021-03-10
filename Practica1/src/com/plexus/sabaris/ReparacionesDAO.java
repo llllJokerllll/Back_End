@@ -18,6 +18,28 @@ public class ReparacionesDAO {
     static VehiculoDAO v = new VehiculoDAO();
 
     public ArrayList<Reparacion> obtener() {
+        Reparacion r2 = new Reparacion();
+        SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Connection con = ConexionBD.obterConexion();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT id_reparacion, cliente, vehiculo, descripcion, fecha, tiempo, totalReparacion FROM reparacion;");
+
+            while (rs.next()) {
+                r2.setId_reparacion(rs.getInt(1));
+                r2.setCliente(c.buscarDni(rs.getString(2)));
+                r2.setVehiculo(v.buscarMatricula(rs.getString(3)));
+                r2.setDescripcion(rs.getString(4));
+                r2.setFecha(formatoDelTexto.parse(rs.getString(5)));
+                r2.setTiempo(rs.getDouble(6));
+                r2.setTotalReparacion(rs.getDouble(7));
+                reparaciones.add(r2);
+            }
+            ConexionBD.devolverConexion(con);
+
+        } catch (SQLException | ParseException e) {
+            System.out.println("ERROR SQL: " + e.getMessage());
+        }
         return reparaciones;
     }
 

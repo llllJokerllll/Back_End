@@ -11,6 +11,25 @@ public class VehiculoDAO implements DAO<Vehiculo> {
     protected ArrayList<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
 
     public ArrayList<Vehiculo> obtener() {
+        Vehiculo v4 = new Vehiculo();
+        try {
+            Connection con = ConexionBD.obterConexion();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT Matricula, Marca, Modelo, Ano, Color FROM vehiculo;");
+
+            while (rs.next()) {
+                v4.setMatricula(rs.getString(1));
+                v4.setMarca(rs.getString(2));
+                v4.setModelo(rs.getString(3));
+                v4.setAno(Integer.parseInt(rs.getString(4)));
+                v4.setColor(rs.getString(5));
+                vehiculos.add(v4);
+            }
+            ConexionBD.devolverConexion(con);
+
+        } catch (SQLException e) {
+            System.out.println("ERROR SQL: " + e.getMessage());
+        }
         return vehiculos;
     }
 

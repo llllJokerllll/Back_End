@@ -11,6 +11,24 @@ public class ClienteDAO implements DAO<Cliente> {
     protected ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
     public ArrayList<Cliente> obtener() {
+        Cliente u3 = new Cliente();
+        try {
+            Connection con = ConexionBD.obterConexion();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente;");
+
+            while (rs.next()) {
+                u3.setDni(rs.getString(1));
+                u3.setNombre(rs.getString(2));
+                u3.setApellidos(rs.getString(3));
+                u3.setEdad(Integer.parseInt(rs.getString(4)));
+                clientes.add(u3);
+            }
+            ConexionBD.devolverConexion(con);
+
+        } catch (SQLException e) {
+            System.out.println("ERROR SQL: " + e.getMessage());
+        }
         return clientes;
     }
 
@@ -21,7 +39,7 @@ public class ClienteDAO implements DAO<Cliente> {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT DNI, Nombre, Apellidos, Edad FROM cliente where DNI = '" + dni + "';");
 
-            while (rs.next()) {
+            if (rs.next()) {
                 u1.setDni(rs.getString(1));
                 u1.setNombre(rs.getString(2));
                 u1.setApellidos(rs.getString(3));

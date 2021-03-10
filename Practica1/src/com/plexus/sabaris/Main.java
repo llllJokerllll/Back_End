@@ -66,9 +66,11 @@ public class Main {
                     break;
                 case 5:
                     System.out.println(guardar() ? "Guardado correctamente" : "No se ha podido guardar");
+                    menu();
                     break;
                 case 6:
                     System.out.println(cargar() ? "Cargado correctamente" : "No se ha podido cargar");
+                    menu();
                     break;
                 case 7:
                     System.out.println("Hasta otra, gracias por utilizar nuestros servicios");
@@ -611,15 +613,39 @@ public class Main {
             System.out.print("Guardando Datos de memoria en ficheros... ");
 
             ObjectOutputStream clientesBak = new ObjectOutputStream(new FileOutputStream("clientes.dat") );
-            clientesBak.writeObject(c.clientes);
+            c.obtener();
+            c.clientes.stream().forEach(e -> {
+                try {
+                    clientesBak.writeObject(e);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    System.out.println(ioException);
+                }
+            });
             clientesBak.close();
 
             ObjectOutputStream vehiculosBak = new ObjectOutputStream(new FileOutputStream("vehiculos.dat") );
-            vehiculosBak.writeObject(c.clientes);
+            v.obtener();
+            v.vehiculos.stream().forEach(e -> {
+                try {
+                    vehiculosBak.writeObject(e);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    System.out.println(ioException);
+                }
+            });
             vehiculosBak.close();
 
             ObjectOutputStream reparacionesBak = new ObjectOutputStream(new FileOutputStream("reparaciones.dat") );
-            reparacionesBak.writeObject(c.clientes);
+            r.obtener();
+            r.reparaciones.stream().forEach(e -> {
+                try {
+                    reparacionesBak.writeObject(e);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    System.out.println(ioException);
+                }
+            });
             reparacionesBak.close();
 
             result = true;
